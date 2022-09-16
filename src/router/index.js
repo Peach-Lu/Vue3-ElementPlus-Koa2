@@ -3,6 +3,7 @@ import Home from './../components/HelloWorld.vue'
 import Welcome from './../components/Welcome.vue'
 import Login from './../components/Login.vue'
 import Test from './../views/test.vue'
+import Test2 from './../views/test2.vue'
 const routes = [
   {
     name: 'home',
@@ -38,6 +39,14 @@ const routes = [
       title: 'test',
     },
     component: Test
+  },
+  {
+    path: '/test2',
+    name: 'test2',
+    meta: {
+      title: 'test2',
+    },
+    component: Test2
   }
 ]
 const router = createRouter({

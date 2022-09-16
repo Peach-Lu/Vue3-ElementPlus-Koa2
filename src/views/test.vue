@@ -26,7 +26,7 @@
       成功次数：{{ success }}
     </el-col>
     <el-col :span="24" style="margin-top: 10px">
-      执行次数过多可能会导致成功率降低
+      服务器高峰期，执行次数过多可能会导致成功率降低
     </el-col>
   </el-row>
 </template>
@@ -36,23 +36,24 @@ import { ref } from 'vue'
 import _axios from './config/index'
 import { ElMessage } from 'element-plus'
 const textarea = ref(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTQ0Mzg2MTYsIm5iZiI6MTY2MzMzNjQxNiwiaWF0IjoxNjYzMzM0NjE2LCJqdGkiOiJDTTpjYXRfbWF0Y2g6bHQxMjM0NTYiLCJvcGVuX2lkIjoiIiwidWlkIjozMDIxNTk2NywiZGVidWciOiIiLCJsYW5nIjoiIn0.ve2y3OoHCQ_9s_0IIcUTrFdRAVHdEkiqTVpDAgDzi9I'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTQ0MzkwNjYsIm5iZiI6MTY2MzMzNjg2NiwiaWF0IjoxNjYzMzM1MDY2LCJqdGkiOiJDTTpjYXRfbWF0Y2g6bHQxMjM0NTYiLCJvcGVuX2lkIjoiIiwidWlkIjozMDIxNTk2NywiZGVidWciOiIiLCJsYW5nIjoiIn0.oIfl5opYJ65CBk85gXiI4rWTxgkzuWnxPkPYTnHQZbA1212'
 )
 window.localStorage.setItem('t', textarea.value)
 const num = ref(1)
 const success = ref(0)
 const timer: any = ref(0)
 const start = async () => {
-  if (!textarea.value)
+  if (!textarea.value) {
     ElMessage({
       message: 'token不能为空',
       type: 'error'
     })
+  }
+  window.localStorage.setItem('t', textarea.value)
+
   success.value = 0
-  timer.value = setInterval(request, 5000)
-  // for (let i = 0; i < num.value; i++) {
-  //   request() //执行
-  // }
+  // request()
+  timer.value = setInterval(request, 200)
 }
 const request = async () => {
   const res = await _axios.get('/sheep/v1/game/game_over', {
