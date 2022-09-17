@@ -1,6 +1,6 @@
 import axios from 'axios'
 const instance = axios.create({
-  baseURL: '/apis',
+  baseURL: '/apip',
   timeout: 5000
 })
 // Add a request interceptor

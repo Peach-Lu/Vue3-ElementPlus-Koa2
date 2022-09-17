@@ -79,6 +79,18 @@ import { ref, onMounted } from 'vue'
 import _axios from './config/qixincai'
 import { ElLoading } from 'element-plus'
 import * as echarts from 'echarts'
+
+_axios
+  .get('/v2/prediction/ls/selectLsjb', {
+    params: {
+      lottery: 2,
+      qs: 90
+    }
+  })
+  .then(res => {
+    console.log('121212', res)
+  })
+
 const queryInfo = ref({
   provinceId: 0,
   pageSize: 30,
