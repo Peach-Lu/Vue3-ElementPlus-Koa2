@@ -15,12 +15,14 @@
       <el-input-number
         v-model="num"
         :min="1"
-        :max="999"
+        :max="99999"
         label="描述文字"
       ></el-input-number>
     </el-col>
     <el-col :span="10">
       <el-button @click="start">执行</el-button>
+      <el-button @click="getToken">token</el-button>
+      <el-button @click="downloadExcel">download</el-button>
     </el-col>
     <el-col :span="24" style="margin-top: 10px">
       成功次数：{{ success }}
@@ -52,8 +54,38 @@ const start = async () => {
   window.localStorage.setItem('t', textarea.value)
 
   success.value = 0
-  // request()
-  timer.value = setInterval(request, 200)
+  request()
+  // timer.value = setInterval(request, 100)
+}
+
+const getToken = async () => {
+  const res = await _axios.get('/sheep/v1/user/login_tourist?uuid="106376571"')
+  console.log(res)
+}
+
+const download = (data, name) => {
+  const a = document.createElement('a')
+  const result = data
+    .map(v => {
+      return Object.values(v).join('\t')
+    })
+    .join('\n')
+  a.href = URL.createObjectURL(new Blob([result]))
+  a.setAttribute('download', name)
+  console.log(a)
+  // a.click()
+  // a.setAttribute('download')
+}
+const downloadExcel = () => {
+  download(
+    [
+      { id: 'ID', name: '姓名', age: '年龄' },
+      { id: '1', name: '张山', age: 22 },
+      { id: '2', name: '里斯', age: 23 },
+      { id: '3', name: '王五', age: 24 }
+    ],
+    '用户信息.xls'
+  )
 }
 const request = async () => {
   const res = await _axios.get('/sheep/v1/game/game_over', {
