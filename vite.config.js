@@ -7,20 +7,20 @@ export default defineConfig({
     host: 'localhost',
     port: 8080,
     proxy: {
-      '/api': {
-        target: 'https://cat-match.easygame2021.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      },
-      // '/apis': {
-      //   target: 'https://webapi.sporttery.cn', //七星彩
+      // '/api': {
+      //   target: 'https://cat-match.easygame2021.com',
       //   changeOrigin: true,
-      //   rewrite: (path) => path.replace(/^\/apis/, '')
+      //   rewrite: (path) => path.replace(/^\/api/, '')
       // },
+      '/apip': {
+        target: 'https://webapi.sporttery.cn', //七星彩
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/apip/, '')
+      },
       // '/apip': {
-      //   target: 'https://wsqbusymp.gouli8.cn', //七星彩
+      //   target: 'https://webapi.sporttery.cn', //排列五
       //   changeOrigin: true,
-      //   rewrite: (path) => path.replace(/^\/apis/, '')
+      //   rewrite: (path) => path.replace(/^\/apip/, '')
       // }
     }
   },
