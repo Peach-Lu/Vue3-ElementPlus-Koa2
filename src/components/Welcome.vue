@@ -18,7 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import request from '../utils/request'
 const radio = ref('')
 const mp3Path = ref('')
 const mymusic = ref<HTMLElement>(null)
@@ -35,5 +36,18 @@ const handleChange = e => {
 const handleClick = item => {
   console.log('点击事件')
 }
+onMounted(async () => {
+  console.log('挂载后')
+  console.log(this)
+  try {
+    const res = await request({
+      method: 'get',
+      url: '/login'
+    })
+    console.log(res)
+  } catch (err) {
+    console.log(err)
+  }
+})
 </script>
 <style scoped></style>

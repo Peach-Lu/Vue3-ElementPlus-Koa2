@@ -54,4 +54,14 @@ function request (options) {
   }
   service(options)
 }
+['get', 'post', 'put', 'delete', 'patch'].forEach(item => {
+  request[item] = (url, data, options) => {
+    return request({
+      url,
+      data,
+      method: item,
+      ...options
+    })
+  }
+})
 export default request
