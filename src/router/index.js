@@ -31,22 +31,6 @@ const routes = [
         component: Login
       }
     ]
-  },
-  {
-    path: '/test',
-    name: 'test',
-    meta: {
-      title: 'test',
-    },
-    component: Test
-  },
-  {
-    path: '/test2',
-    name: 'test2',
-    meta: {
-      title: 'test2',
-    },
-    component: Test2
   }
 ]
 const router = createRouter({
