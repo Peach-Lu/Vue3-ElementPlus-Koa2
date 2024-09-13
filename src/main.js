@@ -6,7 +6,7 @@ import App from './App.vue'
 import router from './router'
 import request from './utils/request'
 import storage from './utils/storage'
-console.log(import.meta.env)
+// console.log(import.meta.env)
 // 挂载全局请求
 const app = createApp(App)
 app.config.globalProperties.$request = request

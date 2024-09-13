@@ -12,7 +12,7 @@ const routes = [
       title: '首页'
     },
     component: Home,
-    redirect: '/welcome',
+    redirect: '/test',
     children: [
       {
         name: 'welcome',
@@ -31,10 +31,21 @@ const routes = [
         component: Login
       }
     ]
+  },
+  {
+    name: 'test',
+    path: '/test',
+    meta: {
+      title: '测试'
+    },
+    component: Test2
   }
 ]
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+router.beforeEach((to, from) => {
+  document.title = to.meta.title
 })
 export default router

@@ -2,24 +2,20 @@
   <h3 align="center">七星彩辅助</h3>
   <span>最新一期：{{ updateValue }}</span>
   <el-col :span="10" style="margin-top: 10px">
-    <el-select
-      @change="handleSelect"
-      v-model="selectValue"
-      class="m-2"
-      placeholder="Select"
-      size="large"
-    >
-      <el-option
-        v-for="item in [
-          { label: '最近30期', value: 30 },
-          { label: '最近50期', value: 50 },
-          { label: '最近100期', value: 100 }
-        ]"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      />
+    <el-select @change="handleSelect" v-model="selectValue" class="m-2" placeholder="Select" size="large">
+      <el-option v-for="item in [
+        { label: '最近5期', value: 5 },
+        { label: '最近10期', value: 10 },
+        { label: '最近20期', value: 20 },
+        { label: '最近30期', value: 30 },
+        { label: '最近40期', value: 40 },
+        { label: '最近50期', value: 50 },
+        { label: '最近100期', value: 100 }
+      ]" :key="item.value" :label="item.label" :value="item.value" />
     </el-select>
+    <ul class="infinite-list" style="overflow: auto">
+      <li v-for="i in HistoryList" :key="i" class="infinite-list-item">{{ i }}</li>
+    </ul>
   </el-col>
   <el-row :gutter="1">
     <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="6">
@@ -57,24 +53,20 @@
   <span>最新一期：{{ updateValue2 }}</span>
   <el-row>
     <el-col :span="10" style="margin-top: 10px">
-      <el-select
-        @change="PaihandleSelect"
-        v-model="selectValue2"
-        class="m-2"
-        placeholder="Select"
-        size="large"
-      >
-        <el-option
-          v-for="item in [
-            { label: '最近30期', value: 30 },
-            { label: '最近50期', value: 50 },
-            { label: '最近100期', value: 100 }
-          ]"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select @change="PaihandleSelect" v-model="selectValue2" class="m-2" placeholder="Select" size="large">
+        <el-option v-for="item in [
+          { label: '最近5期', value: 5 },
+          { label: '最近10期', value: 10 },
+          { label: '最近20期', value: 20 },
+          { label: '最近30期', value: 30 },
+          { label: '最近40期', value: 40 },
+          { label: '最近50期', value: 50 },
+          { label: '最近100期', value: 100 }
+        ]" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
+      <ul class="infinite-list" style="overflow: auto">
+        <li v-for="i in HistoryList2" :key="i" class="infinite-list-item">{{ i }}</li>
+      </ul>
     </el-col>
   </el-row>
   <el-row :gutter="1">
@@ -106,34 +98,24 @@ import { ref, onMounted } from 'vue'
 import _axios from './config/qixincai'
 import { ElLoading } from 'element-plus'
 import * as echarts from 'echarts'
-
-// _axios
-//   .get('/v2/prediction/ls/selectLsjb', {
-//     params: {
-//       lottery: 2,
-//       qs: 90
-//     }
-//   })
-//   .then(res => {
-//     console.log('121212', res)
-//   })
-
 const queryInfo = ref({
   provinceId: 0,
-  pageSize: 30,
+  pageSize: 5,
   isVerify: 1,
   pageNo: 1,
-  termLimits: 30
+  termLimits: 5
 })
 const queryInfo2 = ref({
   provinceId: 0,
-  pageSize: 30,
+  pageSize: 5,
   isVerify: 1,
   pageNo: 1,
-  termLimits: 30
+  termLimits: 5
 })
-const selectValue = ref(30)
-const selectValue2 = ref(30)
+const selectValue = ref(5)
+const selectValue2 = ref(5)
+const HistoryList = ref([])
+const HistoryList2 = ref([])
 const updateValue = ref('')
 const updateValue2 = ref('')
 const total1 = ref({})
@@ -187,6 +169,7 @@ const start = async () => {
   if (res.value && res.value.list.length) {
     // 最新一期
     updateValue.value = res.value.list[0].lotteryDrawResult
+    HistoryList.value = res.value.list.map(item => item.lotteryDrawResult.split(' ').splice(0, 4).join(' '))
     // 字符串提取
     const one: any = []
     const two: any = []
@@ -212,7 +195,8 @@ const start = async () => {
   // 排列五
   if (res2.value.list.length) {
     // 最新一期
-    updateValue.value = res2.value.list[0].lotteryDrawResult
+    updateValue2.value = res2.value.list[0].lotteryDrawResult
+    HistoryList2.value = res2.value.list.map(item => item.lotteryDrawResult.split(' ').splice(0, 4).join(' '))
     // 字符串提取
     const five: any = []
     const six: any = []
@@ -225,7 +209,6 @@ const start = async () => {
         .split(' ')
         .splice(0, 5)
         .join('')
-      console.log('result', result)
       // 填充数据
       five.push(result[0])
       six.push(result[1])
@@ -362,5 +345,26 @@ const filterData = total => {
 <style scoped>
 .active {
   background: #eee;
+}
+
+.infinite-list {
+  height: 300px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+
+.infinite-list .infinite-list-item+.list-item {
+  margin-top: 10px;
 }
 </style>
