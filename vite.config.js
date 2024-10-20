@@ -7,6 +7,11 @@ export default defineConfig({
     host: 'localhost',
     port: 8080,
     proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
       // '/api': {
       //   target: 'https://cat-match.easygame2021.com',
       //   changeOrigin: true,
